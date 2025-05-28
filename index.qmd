@@ -1,0 +1,301 @@
+---
+title: "Del perceptrón a las redes neuronales"
+author: "Guillermo Barrios"
+date: "2025-05-24"
+format:
+  revealjs:
+    theme: simple
+    logo: 'img/logo.png'
+    slide-level: 2       # convierte todos los encabezados ## en nuevas diapositivas
+    slide-number: true
+    incremental: true     # aparece elemento a elemento
+    transition: fade
+---
+
+
+## Del Perceptrón a las redes neuronales {.center}
+::: incremental 
+_live coding_ en Google Colab para entender las redes neuronales.
+:::
+
+
+## Paper de Rosenblatt
+
+![](img/summary_perceptron.png){ .lightbox}
+
+
+
+## Detalle ampliado
+
+![](img/language_translation.png){ .lightbox }
+
+## Invierno de la IA (1974--1980)
+
+
+<br>
+<br>
+
+
+  El **informe Lighthill** de Sir James Lighthill (enero de 1973), encargado por el Consejo de Investigación de Ciencias del Reino Unido, concluyó que los avances reales de la IA estaban muy por debajo de lo prometido y recomendó retirar la mayor parte de los fondos estatales a proyectos en este campo.
+
+
+## ¿Qué es un perceptrón
+
+<br>
+
+- Unidad de procesamiento inspirada en la **neurona biológica**.  
+- Clasificador binario: decide si una entrada pertenece a una clase u otra.  
+- Propuesto por **Frank Rosenblatt** en 1957.
+
+
+## Esquema del perceptrón
+
+<br>
+<br>
+
+![](img/perceptron_scheme.png){ .lightbox}
+
+
+## Perceptrón
+
+<br>
+
+$z = \mathbf{w}^\top \mathbf{x} + b$
+
+<br>
+
+$h(z) =
+\begin{cases}
+0, & z < 0,\\
+1, & z \ge 0,
+\end{cases}$
+
+<br>
+
+$y = h\bigl(\mathbf{w}^\top \mathbf{x} + b\bigr)$
+<!-- $y = f_{w,b}(\mathbf{x}) = h\bigl(\mathbf{w}^\top \mathbf{x} + b\bigr)$ -->
+
+<!-- ## Error y actualización -->
+
+$\text{error}=Y−y$ 
+
+$\Delta w_i = \mathrm{LR}\,\bigl(Y - y\bigr)\,x_i$
+
+
+
+## Manual de uso de un perceptrón
+
+
+1. **Inicializar**  
+   <!-- - Poner todos los pesos en cero.  
+   - Poner el sesgo (bias) en cero. -->
+
+2. **Iterar por épocas**  
+   <!-- - Repetir el ciclo de aprendizaje un número fijo de veces. -->
+
+3. **Para cada ejemplo de entrenamiento**  
+   1. **Calcular la salida del perceptrón**  
+      <!-- - Multiplicar las entradas por sus pesos, sumar el sesgo y aplicar la función de activación (paso unitario).   -->
+   2. **Calcular el error**  
+      <!-- - Restar la salida obtenida de la etiqueta correcta.   -->
+   3. **Actualizar los pesos y sesgo**  
+      <!-- - Ajustar cada peso proporcional al error, a la entrada correspondiente y a la tasa de aprendizaje.   -->
+   <!-- 4. **Actualizar el sesgo**   -->
+      <!-- - Ajustar el sesgo proporcional al error y a la tasa de aprendizaje. -->
+
+4. **Devolver pesos y el sesgo ajustados**
+
+## Puerta lógica AND
+
+
+:::: {.columns}
+
+:::{.column width="40%" .right }
+
+<table>
+  <thead style="background-color: #f0f0f0;">
+    <tr>
+      <th style="padding: 8px 12px; text-align: center;">A</th>
+      <th style="padding: 8px 12px; text-align: center;">B</th>
+      <th style="padding: 8px 12px; text-align: center;">A & B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 8px 12px; text-align: center;">0</td>
+      <td style="padding: 8px 12px; text-align: center;">0</td>
+      <td style="background-color: #f8d7da; padding: 8px 12px; text-align: center;">0</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 12px; text-align: center;">0</td>
+      <td style="padding: 8px 12px; text-align: center;">1</td>
+      <td style="background-color: #f8d7da; padding: 8px 12px; text-align: center;">0</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 12px; text-align: center;">1</td>
+      <td style="padding: 8px 12px; text-align: center;">0</td>
+      <td style="background-color: #f8d7da; padding: 8px 12px; text-align: center;">0</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 12px; text-align: center;">1</td>
+      <td style="padding: 8px 12px; text-align: center;">1</td>
+      <td style="background-color: #d4edda; padding: 8px 12px; text-align: center;">1</td>
+    </tr>
+  </tbody>
+</table>
+
+:::
+
+:::{.column width="60%"}
+```python 
+# Entradas
+x = np.array([
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+])
+
+# Salidas deseadas
+Y = np.array([0, 0, 0, 1])
+
+# Pesos iniciales
+w = np.array([0,0])
+
+# Sesgo inicial
+b = 0
+``` 
+:::
+
+::::
+
+
+## Puerta lógica XOR
+
+:::: {.columns}
+
+:::{.column width="40%" .right}
+
+<table>
+  <thead style="background-color: #f0f0f0;">
+    <tr>
+      <th style="padding: 8px 12px; text-align: center;">A</th>
+      <th style="padding: 8px 12px; text-align: center;">B</th>
+      <th style="padding: 8px 12px; text-align: center;">A ⊕ B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 8px 12px; text-align: center;">0</td>
+      <td style="padding: 8px 12px; text-align: center;">0</td>
+      <td style="background-color: #f8d7da; padding: 8px 12px; text-align: center;">0</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 12px; text-align: center;">0</td>
+      <td style="padding: 8px 12px; text-align: center;">1</td>
+      <td style="background-color: #d4edda; padding: 8px 12px; text-align: center;">1</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 12px; text-align: center;">1</td>
+      <td style="padding: 8px 12px; text-align: center;">0</td>
+      <td style="background-color: #d4edda; padding: 8px 12px; text-align: center;">1</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 12px; text-align: center;">1</td>
+      <td style="padding: 8px 12px; text-align: center;">1</td>
+      <td style="background-color: #f8d7da; padding: 8px 12px; text-align: center;">0</td>
+    </tr>
+  </tbody>
+</table>
+
+:::
+
+:::{.column width="60%"}
+
+  ```python
+  # Entradas
+  x = np.array([
+      [0, 0],
+      [0, 1],
+      [1, 0],
+      [1, 1]
+  ])
+
+  # Salidas deseadas para XOR
+  Y = np.array([0, 1, 1, 0])
+
+# Pesos iniciales
+w = np.array([0,0])
+
+# Sesgo inicial
+b = 0
+```
+
+:::
+
+::::
+
+## AND: Perceptrón en Google Colab
+
+[![](img/google_colab_AND.png)](https://colab.research.google.com/drive/1OMee_vTQXbdsXTrN6syQydwA8k_ccVp_?usp=sharing)
+
+
+
+## XOR: Perceptrón en Google Colab
+
+[![](img/google_colab_XOR.png)](https://colab.research.google.com/drive/10nrTgGWWoMYsv_Os3cbFlF0eAI1Spx1p?usp=sharing)
+
+
+
+## AND y XOR
+
+![](img/error_XOR.png){.lightbox} 
+
+## AND y XOR {.center}
+
+![](img/and_or_xor.png){.lightbox}
+
+
+## Backpropagation y Redes Neuronales
+
+| Año      | Investigador              | “Nombre” de la contribución   |
+| -------- | ------------------------- | ---------------------------   |
+| **1970** | Seppo Linnainmaa          | *Reverse-mode AD*             |
+| **1974** | Paul Werbos               | *Back-prop en redes*          |
+| **1982** | John Hopfield             | *Interés en redes neuronales* |
+| **1986** | Rumelhart-Hinton-Williams | *Back-prop popularizado*      |
+
+
+## Backpropagation + Multicapa
+
+| Paso               | Perceptrón simple            | Multicapa (+ back-prop)                     |
+| ------------------ | ---------------------------- | ------------------------------------------- |
+| Activación         | Escalón (`h`) – no derivable | Sigmoide – derivable                        |
+| Capas              | 1 (entrada → salida)         | 2 (entrada → oculta → salida)               |
+| Aprendizaje        | Regla de perceptrón          | Gradiente descendente con retro-propagación |
+| Puede aprender XOR | ❌                            | ✅                                           |
+
+## Multicapas {.center}
+
+![](img/multicapas.png)
+
+## Back-propagation: cómo aprende una red
+
+
+* Calcula el **error** en la salida.
+* Propaga ese error **hacia atrás** usando la regla de la cadena para obtener la pendiente (gradiente) de cada peso.
+* Combina los gradientes con **descenso del gradiente** (u otro optimizador) para actualizar los parámetros.
+* Permite entrenar cualquier grafo computacional compuesto de operaciones derivables.
+
+
+
+
+## XOR: Red neuronal en Google Colab
+
+[![](img/red_xor.png)](https://colab.research.google.com/drive/11L2vVBkQ65aNBMT-lrMGZjp5Q9606Nn9?usp=sharing)
+
+
+
+## Playground TensorFlow {.center}
+
+![https://playground.tensorflow.org/](https://playground.tensorflow.org/)
