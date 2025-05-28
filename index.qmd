@@ -18,6 +18,9 @@ format:
 _live coding_ en Google Colab para entender las redes neuronales.
 :::
 
+## QR {.center}
+
+![](img/qrcode_altamarmx.github.io.png)
 
 ## Paper de Rosenblatt
 
