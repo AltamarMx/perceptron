@@ -22,6 +22,8 @@ _live coding_ en Google Colab para entender las redes neuronales.
 
 ![](img/qrcode_altamarmx.github.io.png)
 
+AltamarMx.github.io/perceptron
+
 ## Paper de Rosenblatt
 
 ![](img/summary_perceptron.png){ .lightbox}
